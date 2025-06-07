@@ -41,48 +41,14 @@
     <input type="file" id="fileInput" />
     <button id="downloadBtn">Bild herunterladen</button>
 
-    <!-- TensorFlow.js und BodyPix (optional für Freistellen) -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix"></script>
-
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const fileInput = document.getElementById('fileInput');
         const downloadBtn = document.getElementById('downloadBtn');
 
-        fileInput.addEventListener('change', async (event) => {
-            const file = event.target.files[0];
-            if (!file) return;
+        function drawImageProportionally(img, ctx, canvas) {
+            const imgAspect = img.width / img.height;
+            const canvasAspect = canvas.width / canvas.height;
 
-            const img = new Image();
-            img.onload = async () => {
-                // Zeichne das hochgeladene Bild auf das Canvas
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                // Option: Freistellen mit BodyPix
-                const net = await bodyPix.load();
-                const segmentation = await net.segmentPerson(img);
-                const mask = bodyPix.toMask(segmentation);
-                ctx.putImageData(mask, 0, 0);
-
-                // Overlay hinzufügen
-                const overlay = new Image();
-                overlay.src = 'https://ichkannes.github.io/profilbild-overlay/overlay.png'; // Overlay-Bild
-                overlay.onload = () => {
-                    ctx.drawImage(overlay, 0, 0, canvas.width, canvas.height);
-                };
-            };
-            img.src = URL.createObjectURL(file);
-        });
-
-        downloadBtn.addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.download = 'edited-image.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        });
-    </script>
-</body>
-</html>
+            let drawWidth, draw
