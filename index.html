@@ -13,28 +13,14 @@
             background-color: #f4f4f4;
         }
 
-        #background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://ichkannes.github.io/profilbild-overlay/background.jpg'); /* Hintergrundbild */
-            background-size: cover;
-            background-position: center;
-            z-index: -1;
-        }
-
         canvas {
             border: 1px solid #ccc;
             margin-top: 20px;
-            background: white; /* Hintergrund des Canvas */
+            background: white; /* Sicherstellen, dass der Hintergrund des Canvas weiß ist */
         }
     </style>
 </head>
 <body>
-    <div id="background"></div>
-
     <h1>Profilbild freistellen mit Overlay und Hintergrund</h1>
     <canvas id="canvas" width="300" height="300"></canvas>
     <br>
@@ -61,8 +47,10 @@
             background.src = 'https://ichkannes.github.io/profilbild-overlay/background.jpg';
             background.onload = () => {
                 ctx.drawImage(background, 0, 0, canvas.width, canvas.height); // Hintergrund zeichnen
-                // Bild zeichnen
-                ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, canvas.width, canvas.height); // Bild ins Canvas zeichnen
+
+                // Bild ins Canvas zeichnen
+                ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, canvas.width, canvas.height);
+
                 addOverlay(); // Overlay hinzufügen
             };
         }
@@ -90,8 +78,8 @@
         downloadBtn.addEventListener('click', () => {
             const link = document.createElement('a');
             link.download = 'edited-image.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click(); // Bild herunterladen
+            link.href = canvas.toDataURL('image/png'); // Bild herunterladen
+            link.click();
         });
     </script>
 </body>
