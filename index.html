@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +20,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('https://ichkannes.github.io/profilbild-overlay/background.jpg'); /* Hintergrundbild */
+            background-image: url('https://ichkannes.github.io/profilbild-overlay/background.jpg');
+            /* Hintergrundbild */
             background-size: cover;
             background-position: center;
             z-index: -1;
@@ -28,13 +30,14 @@
         canvas {
             border: 1px solid #ccc;
             margin-top: 20px;
-            background: white; /* Sicherstellen, dass der Hintergrund des Canvas weiß ist */
+            background: white;
+            /* Sicherstellen, dass der Hintergrund des Canvas weiß ist */
         }
     </style>
 </head>
+
 <body>
     <div id="background"></div>
-
     <h1>Profilbild freistellen mit Overlay und Hintergrund</h1>
     <canvas id="canvas" width="300" height="300"></canvas>
     <br>
@@ -48,6 +51,7 @@
         const downloadBtn = document.getElementById('downloadBtn');
 
         function drawImageCentered(img) {
+            // Hier wird das Bild auf quadratisches Format zugeschnitten
             const size = Math.min(img.width, img.height);
             const offsetX = (img.width - size) / 2;
             const offsetY = (img.height - size) / 2;
@@ -55,13 +59,14 @@
             // Canvas leeren
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Neues Hintergrundbild
+            // Hintergrund zeichnen
             const background = new Image();
             background.src = 'https://ichkannes.github.io/profilbild-overlay/background.jpg';
             background.onload = () => {
                 ctx.drawImage(background, 0, 0, canvas.width, canvas.height); // Hintergrund zeichnen
-                ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, canvas.width, canvas.height); // Bild zeichnen
-                addOverlay(); // Overlay nach dem Bild hinzufügen
+                // Bild zeichnen
+                ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, canvas.width, canvas.height); // Bild ins Canvas zeichnen
+                addOverlay(); // Overlay hinzufügen
             };
         }
 
@@ -69,7 +74,8 @@
             const overlay = new Image();
             overlay.src = 'https://ichkannes.github.io/profilbild-overlay/overlay.png'; // Overlay-Bild
             overlay.onload = () => {
-                ctx.drawImage(overlay, 0, 0, canvas.width, canvas.height); // Overlay zeichnen
+                // Overlay zeichnen
+                ctx.drawImage(overlay, 0, 0, canvas.width, canvas.height);
             };
         }
 
@@ -92,4 +98,5 @@
         });
     </script>
 </body>
+
 </html>
