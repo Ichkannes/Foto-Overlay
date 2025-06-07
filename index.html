@@ -38,7 +38,7 @@
     <h1>Profilbild freistellen mit Overlay und Hintergrund</h1>
     <canvas id="canvas" width="300" height="300"></canvas>
     <br>
-    <input type="file" id="fileInput" />
+    <input type="file" id="fileInput" accept="image/*" />
     <button id="downloadBtn">Bild herunterladen</button>
 
     <script>
@@ -47,8 +47,52 @@
         const fileInput = document.getElementById('fileInput');
         const downloadBtn = document.getElementById('downloadBtn');
 
-        function drawImageProportionally(img, ctx, canvas) {
-            const imgAspect = img.width / img.height;
-            const canvasAspect = canvas.width / canvas.height;
+        function drawImageCentered(img, ctx, canvas) {
+            const size = Math.min(img.width, img.height);
+            const offsetX = (img.width - size) / 2;
+            const offsetY = (img.height - size) / 2;
 
-            let drawWidth, draw
+            // Zuschneiden des Bildes und zeichnen in das quadratische Canvas
+            ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, canvas.width, canvas.height);
+        }
+
+        fileInput.addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const img = new Image();
+            img.onload = async () => {
+                // Canvas löschen
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Bild zentriert und zugeschnitten zeichnen
+                drawImageCentered(img, ctx, canvas);
+
+                // Neuen Hintergrund zeichnen (hinter das Bild)
+                const background = new Image();
+                background.src = 'https://ichkannes.github.io/profilbild-overlay/background.jpg'; // Neuen Hintergrund setzen
+                background.onload = () => {
+                    ctx.globalCompositeOperation = 'destination-over'; // Hintergrund hinter das Bild zeichnen
+                    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+                    ctx.globalCompositeOperation = 'source-over'; // Zurück zur normalen Zeichenoperation
+
+                    // Overlay hinzufügen
+                    const overlay = new Image();
+                    overlay.src = 'https://ichkannes.github.io/profilbild-overlay/overlay.png'; // Overlay-Bild
+                    overlay.onload = () => {
+                        ctx.drawImage(overlay, 0, 0, canvas.width, canvas.height); // Overlay auf das Canvas zeichnen
+                    };
+                };
+            };
+            img.src = URL.createObjectURL(file);
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'edited-image.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+    </script>
+</body>
+</html>
