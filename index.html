@@ -47,17 +47,17 @@
             background.src = 'https://ichkannes.github.io/profilbild-overlay/background.jpg';
             background.onload = () => {
                 ctx.drawImage(background, 0, 0, canvas.width, canvas.height); // Hintergrund zeichnen
-
+                
                 // Bild ins Canvas zeichnen
                 ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, canvas.width, canvas.height);
-
+                
                 addOverlay(); // Overlay hinzufügen
             };
         }
 
         function addOverlay() {
             const overlay = new Image();
-            overlay.src = 'https://ichkannes.github.io/profilbild-overlay/overlay.png'; // Overlay-Bild
+            overlay.src = 'https://ichkannes.github.io/profilbild-overlay/overlay.png';
             overlay.onload = () => {
                 // Overlay zeichnen
                 ctx.drawImage(overlay, 0, 0, canvas.width, canvas.height);
@@ -78,8 +78,8 @@
         downloadBtn.addEventListener('click', () => {
             const link = document.createElement('a');
             link.download = 'edited-image.png';
-            link.href = canvas.toDataURL('image/png'); // Bild herunterladen
-            link.click();
+            link.href = canvas.toDataURL('image/png');
+            link.click(); // Bild herunterladen
         });
     </script>
 </body>
